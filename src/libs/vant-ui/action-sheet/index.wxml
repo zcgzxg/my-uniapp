@@ -1,0 +1,74 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+
+<van-popup
+  show="{{ show }}"
+  position="bottom"
+  round="{{ round }}"
+  z-index="{{ zIndex }}"
+  overlay="{{ overlay }}"
+  custom-class="van-action-sheet custom-class"
+  safe-area-inset-bottom="{{ false }}"
+  close-on-click-overlay="{{ closeOnClickOverlay }}"
+  root-portal="{{ rootPortal }}"
+  bind:close="onClickOverlay"
+>
+  <view wx:if="{{ title }}" class="van-action-sheet__header">
+    {{ title }}
+    <van-icon name="cross" custom-class="van-action-sheet__close" bind:click="onClose" />
+  </view>
+  <view wx:if="{{ description }}" class="van-action-sheet__description van-hairline--bottom">
+    {{ description }}
+  </view>
+  <view wx:if="{{ actions && actions.length }}" class="list-class">
+    <!-- button外包一层view，防止actions动态变化，导致渲染时button被打散 -->
+    <button
+      wx:for="{{ actions }}"
+      wx:key="index"
+      open-type="{{ item.disabled || item.loading || (canIUseGetUserProfile && item.openType === 'getUserInfo') ? '' : item.openType }}"
+      style="{{ item.color ? 'color: ' + item.color : '' }}"
+      class="{{ utils.bem('action-sheet__item', { disabled: item.disabled || item.loading }) }} {{ item.className || '' }} {{ activeIndex === index ? 'van-action-sheet__item--active' : '' }}"
+      hover-class="van-action-sheet__item--hover"
+      data-index="{{ index }}"
+      bindtap="{{ item.disabled || item.loading ? '' : 'onSelect' }}"
+      bindgetuserinfo="onGetUserInfo"
+      bindcontact="onContact"
+      bindgetphonenumber="onGetPhoneNumber"
+      binderror="onError"
+      bindlaunchapp="onLaunchApp"
+      bindopensetting="onOpenSetting"
+      lang="{{ lang }}"
+      session-from="{{ sessionFrom }}"
+      send-message-title="{{ sendMessageTitle }}"
+      send-message-path="{{ sendMessagePath }}"
+      send-message-img="{{ sendMessageImg }}"
+      show-message-card="{{ showMessageCard }}"
+      app-parameter="{{ appParameter }}"
+    >
+      <block wx:if="{{ !item.loading }}">
+        <view class="van-action-sheet__name">{{ item.name }}</view>
+        <view wx:if="{{ item.subname }}" class="van-action-sheet__subname">{{ item.subname }}</view>
+      </block>
+      <van-loading wx:else custom-class="van-action-sheet__loading" size="22px" />
+    </button>
+  </view>
+  <slot />
+  <view wx:if="{{ showFooter }}" class="van-action-sheet__footer">
+    <view class="van-action-sheet__button-wrap">
+      <van-button
+        custom-class="{{ showConfirmBtn ? 'van-action-sheet__cancel-button' : 'van-action-sheet__single-button' }}"
+        type="secondary"
+        bind:tap="onCancel"
+      >
+        {{ cancelText || (showConfirmBtn ? '返回' : '取消') }}
+      </van-button>
+      <van-button
+        wx:if="{{ showConfirmBtn }}"
+        custom-class="van-action-sheet__confirm-button"
+        type="primary"
+        bind:tap="onConfirm"
+      >
+        {{ confirmText || '确认' }}
+      </van-button>
+    </view>
+  </view>
+</van-popup>

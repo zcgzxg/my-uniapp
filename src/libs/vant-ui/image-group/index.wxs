@@ -1,0 +1,53 @@
+/* eslint-disable */
+var style = require('../wxs/style.wxs');
+
+function imageWrapStyle(displayRule, index, images) {
+  return style([
+    {
+      width: displayRule.imageWidth + 'rpx',
+      height: displayRule.imageHeight + 'rpx',
+      marginRight:
+        (index + 1) % displayRule.imageCount === 0
+          ? '0'
+          : displayRule.imageGap + 'rpx',
+      marginBottom:
+        index < images.length - displayRule.imageCount
+          ? displayRule.imageGap + 'rpx'
+          : '0',
+    },
+  ]);
+}
+
+function imageWrapClass(index, images) {
+  var imageCount = images.length;
+
+  if (imageCount === 1) {
+    return {
+      'border-left-top': true,
+      'border-left-bottom': true,
+      'border-right-top': true,
+      'border-right-bottom': true,
+    };
+  }
+
+  if (imageCount === 2 || imageCount === 4) {
+    return {
+      'border-left-top': index === 0,
+      'border-left-bottom': index === imageCount - 2,
+      'border-right-top': index === 1,
+      'border-right-bottom': index === imageCount - 1,
+    };
+  }
+
+  return {
+    'border-left-top': index === 0,
+    'border-left-bottom': index % 3 === 0 && index >= imageCount - 3,
+    'border-right-top': index === 2,
+    'border-right-bottom': index + 1 === imageCount,
+  };
+}
+
+module.exports = {
+  imageWrapStyle: imageWrapStyle,
+  imageWrapClass: imageWrapClass,
+};

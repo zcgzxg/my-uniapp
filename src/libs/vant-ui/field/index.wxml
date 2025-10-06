@@ -1,0 +1,69 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="./index.wxs" module="computed" />
+
+<van-cell
+  size="{{ size }}"
+  icon="{{ leftIcon }}"
+  center="{{ center }}"
+  border="{{ border }}"
+  is-link="{{ isLink }}"
+  required="{{ required }}"
+  clickable="{{ clickable }}"
+  title-width="{{ titleWidth }}"
+  title-style="margin-right: 12px;"
+  custom-style="{{ customStyle }}"
+  arrow-direction="{{ arrowDirection }}"
+  custom-class="custom-class van-field {{ variant === 'underline' ? 'cell-underline' : '' }}"
+>
+  <slot name="left-icon" slot="icon" />
+  <label for="{{ name }}" wx:if="{{ label }}" class="label-class {{ utils.bem('field__label', { disabled }) }}" slot="title">
+    {{ label }}
+  </label>
+  <slot wx:else name="label" slot="title" />
+  <view class="{{ utils.bem('field__body', [type, { fill: variant === 'filled', line: variant === 'underline', disabled }]) }}{{ (variant !== 'filled' && type !== 'textarea' && (helperText || showWordLimit)) ? ' has-line' : '' }}">
+    <view class="{{ utils.bem('field__control', [inputAlign, 'custom']) }}" bindtap="onClickInput">
+      <slot name="input" />
+    </view>
+    <view wx:if="{{ type === 'textarea' }}" class="{{ utils.bem('field__textarea') }}">
+      <include src="./textarea.wxml" />
+      <label for="{{ name }}" wx:if="{{ showWordLimit && maxlength }}" class="van-field__word-limit">
+        <view class="{{ utils.bem('field__word-num') }}">{{ value.length >= maxlength ? maxlength : value.length }}</view>/{{ maxlength }}
+      </label>
+    </view>
+
+    <include wx:else src="./input.wxml" />
+
+    <van-icon
+      wx:if="{{ showClear }}"
+      name="{{ clearIcon }}"
+      class="van-field__clear-root van-field__icon-root"
+      catch:touchstart="onClear"
+    />
+    <view class="van-field__icon-container" bind:tap="onClickIcon">
+      <van-icon
+        wx:if="{{ rightIcon || icon }}"
+        name="{{ rightIcon || icon }}"
+        class="van-field__icon-root {{ iconClass }}"
+        custom-class="right-icon-class"
+      />
+      <slot name="right-icon" />
+      <slot name="icon" />
+    </view>
+    <view class="van-field__button">
+      <slot name="button" />
+    </view>
+  </view>
+  <view wx:if="{{ variant !== 'filled' && type !== 'textarea' && (helperText || (showWordLimit && maxlength)) }}"
+  class="van-field__line{{ lineFocused ? ' van-field__line--focused' : '' }}"></view>
+  <view class="{{ utils.bem('field__extra') }}">
+    <label for="{{ name }}"  class="{{ utils.bem('field__helper-text', { bottom: helperText }) }}">
+      {{ helperText || '' }}
+    </label>
+    <label for="{{ name }}" wx:if="{{ type !== 'textarea' && showWordLimit && maxlength  }}" class="van-field__word-limit">
+      <view class="{{ utils.bem('field__word-num') }}">{{ value.length >= maxlength ? maxlength : value.length }}</view>/{{ maxlength }}
+    </label>
+  </view>
+  <label for="{{ name }}"  wx:if="{{ errorMessage }}" class="{{ utils.bem('field__error-message', [errorMessageAlign, { disabled, error }]) }}">
+    {{ errorMessage }}
+  </label>
+</van-cell>

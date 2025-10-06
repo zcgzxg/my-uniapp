@@ -1,0 +1,22 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="./index.wxs" module="computed" />
+
+<view class="custom-class van-empty {{ isList ? 'van-empty--list' : '' }}">
+  <view class="van-empty__image {{ isList ? 'van-empty__image--list' : '' }}">
+    <slot name="image"></slot>
+  </view>
+  <view class="van-empty__image {{ isList ? 'van-empty__image--list' : '' }}">
+    <image wx:if="{{ image }}" class="van-empty__image__img" src="{{ computed.imageUrl(image) }}" />
+  </view>
+
+  <view class="van-empty__description {{ isList ? 'van-empty__description--list' : '' }}">
+    <slot name="description"></slot>
+  </view>
+  <view class="van-empty__description {{ isList ? 'van-empty__description--list' : '' }}">
+    {{ description }}
+  </view>
+
+  <view class="van-empty__bottom">
+    <slot></slot>
+  </view>
+</view>

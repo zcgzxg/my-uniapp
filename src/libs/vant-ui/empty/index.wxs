@@ -1,0 +1,15 @@
+/* eslint-disable */
+var PRESETS = ['no-data', 'no-message', 'no-favorite', 'loading-fail', 'no-permission'];
+
+function imageUrl(image) {
+  if (PRESETS.indexOf(image) !== -1) {
+    return 'https://resoure-cos.jielong.com/component/vant/default/' + image + '.png';
+  }
+
+  return image;
+}
+
+module.exports = {
+  imageUrl: imageUrl,
+};
+

@@ -1,0 +1,27 @@
+/* eslint-disable */
+var style = require('../wxs/style.wxs');
+
+function barStyle(data) {
+  return style({
+    'z-index': data.transition ? 999 : data.zIndex,
+    'padding-top': data.safeAreaInsetTop ? data.statusBarHeight + 'px' : 0,
+    '--nav-bar-height': data.navbarDivHeight + 'px',
+    '--nav-bar-title-max-width': data.navbarDivTitleWidth + 'px',
+  });
+}
+
+
+/* eslint-disable */
+var PRESETS = ['home', 'chevron-right', 'chevron-left'];
+function imageUrl(image) {
+  if (PRESETS.indexOf(image) !== -1) {
+    return 'https://resoure-cos.jielong.com/component/vant/navbar/' + image + '.png';
+  }
+
+  return image;
+}
+
+module.exports = {
+  barStyle: barStyle,
+  imageUrl: imageUrl,
+};

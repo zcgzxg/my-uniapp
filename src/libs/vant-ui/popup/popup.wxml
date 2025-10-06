@@ -1,0 +1,25 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="./index.wxs" module="computed" />
+<view wx:if="{{ inited }}" class="custom-class {{ classes }} {{ utils.bem('popup', [position, { round, safe: safeAreaInsetBottom, safeTop: safeAreaInsetTop, safeTabBar: safeAreaTabBar }]) }}" style="{{ computed.popupStyle({ zIndex, currentDuration, display, customStyle }) }}" bind:transitionend="onTransitionEnd">
+  <view class="{{FIXED_AREA_VIEW_CLASS}}">
+    <view wx:if="{{ draggableSheet }}" class="van-popup__drag-bar" bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
+      <view class="van-popup__drag-bar-line" />
+    </view>
+    <view wx:if="{{ title }}" class="van-popup__title">{{ title }}</view>
+    <van-icon wx:if="{{ closeable }}" name="{{ closeIcon }}" class="close-icon-class van-popup__close-icon van-popup__close-icon--{{ closeIconPosition }}" bind:tap="onClickCloseIcon" />
+  </view>
+  <!-- 内容区域 -->
+  <view scroll-y wx:if="{{ draggableSheet }}" style="height: {{ __contentHeight__ }}px;" class="van-popup__content">
+    <slot />
+  </view>
+  <slot wx:else />
+  <!-- 底部按钮 -->
+  <view wx:if="{{ confirmButtonText || cancelButtonText }}" class="van-popup__footer {{FIXED_AREA_VIEW_CLASS}}">
+    <van-button wx:if="{{ cancelButtonText }}" class="van-popup__footer-button" size="large" type="secondary" bind:tap="onClickCancelButton">
+      {{ cancelButtonText }}
+    </van-button>
+    <van-button wx:if="{{ confirmButtonText }}" class="van-popup__footer-button" size="large" bind:tap="onClickConfirmButton">
+      {{ confirmButtonText }}
+    </van-button>
+  </view>
+</view>

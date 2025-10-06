@@ -1,0 +1,32 @@
+<!-- prettier-ignore -->
+<view class="dialog {{show ? 'dialog_show' : ''}}">
+  <view wx:if="{{mask}}" class="weui-mask" catchtap="close" catchtouchmove="close"></view>
+    <view class="weui-actionsheet {{show ? 'weui-actionsheet_toggle' : ''}}" catchtouchmove="preventdefault">
+    <view class="movable-area-wrap">
+      <movable-area class="target" bindtap="areaTap" style="background-color:{{hueColor}}">
+        <view class="black-back"></view>
+        <movable-view direction="all" bindchange="changeSV" x="{{x}}" y="{{y}}" animation="{{false}}" class="iconfont icon-ios-locate-outline" ></movable-view>
+      </movable-area>
+      <slider bindchanging="changeHue" bindchange="changeHue" activeColor="transparent" backgroundColor="transparent" class="ribbon silder" max="360" value="{{hsv.h}}" block-color="{{colorRes}}" ></slider>
+      <view class="alpha-control silder" wx:if="{{hasAlpha}}">
+        <slider bindchanging="changeAlpha" bindchange="changeAlpha" activeColor="transparent" backgroundColor="transparent" class="silder"  max="100" value="{{alpha}}" style="background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, {{colorRes}});" block-color="{{colorRes}}"  ></slider>
+      </view>
+    </view>
+    <view class="color-select-block">
+      <view class="border-block" style="background:{{currentColor}};"></view>
+      <view class="border-block hex-border-block">
+        <text>HEX</text>
+        <!-- <text>{{currentColor}}</text> -->
+        <input  maxlength="{{hasAlpha?'9':'7'}}" style="text-align: end;" always-embed cursor-spacing="{{10}}" placeholder="请输入颜色" bind:input="changeInputColor" value="{{inputColor}}" />
+      </view>
+      <view class="border-block" wx:if="{{hasAlpha}}">{{alpha}}%</view>
+    </view>
+    <view wx:if="{{presetColorList&&presetColorList.length>0}}" class="color-picker-preset-color-wrap" >
+      <view wx:for="{{presetColorList}}" wx:key="index" class="color-picker-preset-color" style="background:{{item}};" catchtap="handlePresetColor" data-color="{{item}}"></view>
+    </view>
+    <view class="color-picker-btns">
+      <view class="btn-cancel" catchtap="handleCancel">取消</view>
+      <view class="btn-confirm" catchtap="handleConfirm">确定</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,30 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="./index.wxs" module="computed" />
+<view id="van-nav-bar__transition-bar" style="height: {{ navHeight / 2 }}px;margin-bottom: -{{ navHeight / 2 }}px;background: transparent;"></view>
+<view wx:if="{{ (fixed || transition) && placeholder }}" style="height: {{ height }}px;" />
+<view id="van-nav-bar" class="{{ utils.bem('nav-bar', { fixed: fixed || transition, transparent: transparentBackground, transition: hasInit }) }} custom-class {{ !transition && border ? 'van-hairline--bottom' : '' }}" style="{{ computed.barStyle({ zIndex, statusBarHeight, safeAreaInsetTop, transition, navbarDivHeight, navbarDivTitleWidth}) }}; {{ customStyle }}">
+  <view class="van-nav-bar__content">
+    <view class="van-nav-bar__left" bind:tap="onClickLeft">
+      <block wx:if="{{ leftArrow || leftText }}">
+        <view wx:if="{{ leftArrow }}" class="van-nav-bar__left-icon-block">
+          <image wx:if="{{ hasBack }}" src="{{ computed.imageUrl('chevron-left') }}" class="van-nav-bar__arrow"></image>
+          <image wx:else src="{{ computed.imageUrl('home') }}" class="van-nav-bar__arrow"></image>
+        </view>
+        <view wx:if="{{ leftText }}" class="van-nav-bar__text" hover-class="van-nav-bar__text--hover" hover-stay-time="70">
+          {{ leftText }}
+        </view>
+      </block>
+      <slot wx:else name="left" />
+    </view>
+    <view class="van-nav-bar__title title-class van-ellipsis">
+      <block wx:if="{{ title }}">{{ title }}</block>
+      <slot wx:else name="title" />
+    </view>
+    <view class="van-nav-bar__right" bind:tap="onClickRight">
+      <view wx:if="{{ rightText }}" class="van-nav-bar__text" hover-class="van-nav-bar__text--hover" hover-stay-time="70">
+        {{ rightText }}
+      </view>
+      <slot wx:else name="right" />
+    </view>
+  </view>
+</view>

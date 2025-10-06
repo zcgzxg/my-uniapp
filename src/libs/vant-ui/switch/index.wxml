@@ -1,0 +1,28 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="./index.wxs" module="computed" />
+
+<view
+  class="{{ utils.bem('switch', { on: checked === activeValue, disabled }) }} custom-class"
+  style="{{ computed.rootStyle({ size, checked, activeColor, inactiveColor, activeValue }) }}"
+  bind:tap="onClick"
+>
+  <view class="van-switch__node node-class">
+    <view wx:if="{{ checked === activeValue }}" class="slot-container">
+      <slot name="on" wx:if="{{!showText}}"></slot>
+      <text wx:else style="{{computed.textStyle({ checked, activeColor, inactiveColor, activeValue })}}">开</text>
+    </view>
+    <view wx:else class="slot-container slot-container-off">
+      <slot name="off" wx:if="{{!showText}}">
+      </slot>
+      <text wx:else style="{{computed.textStyle({ checked, activeColor, inactiveColor, activeValue })}}">关</text>
+    </view>
+    <view class="loading-container">
+      <van-loading
+      wx:if="{{ loading }}"
+      color="{{ computed.loadingColor({ checked, activeColor, inactiveColor, activeValue }) }}"
+      custom-class="van-switch__loading"
+    />
+    </view>
+  </view>
+</view>
+  

@@ -1,0 +1,61 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="./index.wxs" module="computed" />
+
+<!-- hover-class 说明：
+     1. 当按钮类型在 specialTypes 数组中（primary, tertiary, secondary, guide）时，使用特殊的 hover 样式
+     2. 特殊样式格式：van-button--{type}-hover（如 van-button--primary-hover）
+     3. plain 按钮完全不使用 hover-class，而是使用纯 CSS 的 :active 伪类实现按压效果
+     4. 其他普通按钮使用默认的 van-button--active hover-class 样式
+     5. disabled 或 loading 状态下不显示 hover 效果
+-->
+<button
+  id="{{ id || buttonId }}"
+  data-detail="{{ dataset }}"
+  class="custom-class {{ utils.bem('button', [type === 'default' ? 'primary' : type, size, { block, round, plain, square, loading, disabled, hairline, unclickable: disabled || loading }]) }} {{ hairline ? 'van-hairline--surround' : '' }} {{ weight? 'van-button--weight-' + weight : '' }}"
+  hover-class="{{ disabled || loading || plain ? '' : (computed.isSpecialHoverType(type === 'default' ? 'primary' : type) && !color ? 'van-button--' + (type === 'default' ? 'primary' : type) + '-hover' : 'van-button--active hover-class') }}"
+  lang="{{ lang }}"
+  form-type="{{ formType }}"
+  style="{{ computed.rootStyle({ plain, color, customStyle }) }}"
+  open-type="{{ disabled || loading || (canIUseGetUserProfile && openType === 'getUserInfo') ? '' : openType }}"
+  business-id="{{ businessId ? businessId : '' }}"
+  session-from="{{ sessionFrom }}"
+  send-message-title="{{ sendMessageTitle }}"
+  send-message-path="{{ sendMessagePath }}"
+  send-message-img="{{ sendMessageImg }}"
+  show-message-card="{{ showMessageCard }}"
+  app-parameter="{{ appParameter }}"
+  aria-label="{{ ariaLabel }}"
+  bindtap="{{ disabled || loading ? '' : 'onClick' }}"
+  bindgetuserinfo="onGetUserInfo"
+  bindcontact="onContact"
+  bindgetphonenumber="onGetPhoneNumber"
+  bindgetrealtimephonenumber="onGetRealTimePhoneNumber"
+  bindagreeprivacyauthorization="onAgreePrivacyAuthorization"
+  binderror="onError"
+  bindlaunchapp="onLaunchApp"
+  bindopensetting="onOpenSetting"
+  bindchooseavatar="onChooseAvatar"
+>
+  <block wx:if="{{ loading }}">
+    <van-loading
+      custom-class="loading-class"
+      size="{{ loadingSize }}"
+      type="{{ loadingType }}"
+      color="{{ computed.loadingColor({ type, color, plain }) }}"
+    />
+    <view wx:if="{{ loadingText }}" class="van-button__loading-text"> {{ loadingText }} </view>
+  </block>
+  <block wx:else>
+    <van-icon
+      wx:if="{{ icon }}"
+      size="1.2em"
+      name="{{ icon }}"
+      class-prefix="{{ classPrefix }}"
+      class="van-button__icon"
+      custom-style="line-height: inherit;"
+    />
+    <view class="van-button__text">
+      <slot />
+    </view>
+  </block>
+</button>

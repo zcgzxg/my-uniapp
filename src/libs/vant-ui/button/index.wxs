@@ -1,0 +1,50 @@
+/* eslint-disable */
+var style = require('../wxs/style.wxs');
+var color = require('../wxs/addOpacity.wxs');
+
+function rootStyle(data) {
+  if (!data.color) {
+    return data.customStyle;
+  }
+
+  var properties = {
+    color: data.plain ? data.color : '#fff',
+    background: data.plain ? null : data.color,
+  };
+
+  // hide border when color is linear-gradient
+  if (data.color.indexOf('gradient') !== -1) {
+    properties.border = 0;
+  } else {
+    properties['border-color'] = data.color;
+  }
+
+  if (data.plain) {
+    var plainColor = data.color;
+    properties['--button-plain-active-color'] = plainColor
+      ? color.addOpacity(plainColor, 0.2)
+      : null;
+  }
+
+  return style([properties, data.customStyle]);
+}
+
+function loadingColor(data) {
+  if (data.plain) {
+    return data.color ? data.color : '#c9c9c9';
+  }
+
+  return '#fff';
+}
+
+/** 只有specialTypes数组中的type有特殊的点击hover样式，故单独处理，其余的默认用vant的hover样式。 */
+function isSpecialHoverType(type) {
+  var specialTypes = ['primary', 'tertiary', 'secondary', 'guide'];
+  return specialTypes.indexOf(type) !== -1;
+}
+
+module.exports = {
+  rootStyle: rootStyle,
+  loadingColor: loadingColor,
+  isSpecialHoverType: isSpecialHoverType,
+};

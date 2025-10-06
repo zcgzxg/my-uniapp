@@ -1,0 +1,55 @@
+/* eslint-disable */
+
+/**
+ * 为颜色添加透明度
+ * @param {string} color - 颜色值，支持HEX和RGB格式
+ * @param {number} opacity - 透明度，0-1之间的小数
+ */
+function addOpacity(color, opacity) {
+  if (!color) return color;
+
+  var firstChar = color.charAt(0);
+
+  // HEX格式
+  if (firstChar === '#') {
+    var hex = color.substring(1);
+    var hexLen = hex.length;
+
+    // 简写格式
+    if (hexLen === 3) {
+      var h0 = hex.charAt(0);
+      var h1 = hex.charAt(1);
+      var h2 = hex.charAt(2);
+      hex = h0 + h0 + h1 + h1 + h2 + h2;
+      hexLen = 6;
+    }
+
+    if (hexLen === 6) {
+      var r = parseInt(hex.substring(0, 2), 16);
+      var g = parseInt(hex.substring(2, 4), 16);
+      var b = parseInt(hex.substring(4, 6), 16);
+      return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity + ')';
+    }
+  }
+
+  // RGB/RGBA格式
+  if (firstChar === 'r') {
+    if (color.indexOf('rgba(') === 0) {
+      // RGBA
+      var lastComma = color.lastIndexOf(',');
+      if (lastComma !== -1) {
+        return color.substring(0, lastComma) + ',' + opacity + ')';
+      }
+    } else if (color.indexOf('rgb(') === 0) {
+      // RGB
+      var rgbValues = color.substring(4, color.length - 1);
+      return 'rgba(' + rgbValues + ',' + opacity + ')';
+    }
+  }
+
+  return color;
+}
+
+module.exports = {
+  addOpacity: addOpacity,
+};

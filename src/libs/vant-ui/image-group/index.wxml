@@ -1,0 +1,33 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="./index.wxs" module="imageGroup" />
+
+<view
+  class="custom-class {{ utils.bem('image-group')}}"
+  style="width: {{ displayRule.containerWidth }}rpx;"
+>
+  <view 
+    wx:for="{{ images }}"
+    wx:for-item="image"
+    wx:for-index="index"
+    wx:key="index"
+    data-index="{{ index }}"
+    bindtap="onClick" 
+    style="{{ imageGroup.imageWrapStyle(displayRule, index, images) }}"
+    class="{{ utils.bem('image-group__image', imageGroup.imageWrapClass(index, images)) }}"
+  >
+    <van-image
+      width="{{ displayRule.imageWidth }}rpx"
+      height="{{ displayRule.imageHeight }}rpx"
+      src="{{ image[thumbKey] }}"
+      fit="{{ fit }}"
+      webp="{{ webp }}"
+      show-menu-by-longpress="{{ showMenuByLongpress }}"
+      show-error="{{ showError }}"
+      show-loading="{{ showLoading }}"
+      lazy-load="{{ lazyLoad }}"
+      data-index="{{ index }}"
+      bind:error="onError"
+      bind:load="onLoaded"
+    />
+  </view>
+</view>

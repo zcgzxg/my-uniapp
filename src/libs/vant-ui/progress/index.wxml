@@ -1,0 +1,36 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="./index.wxs" module="computed" />
+
+<view class="van-progress-wrap  custom-class" wx:if="{{theme==='default'}}">
+  <view class="van-progress" style="{{ computed.rootStyle({ strokeWidth, trackColor }) }}">
+    <view class="van-progress__portion" style="{{ computed.portionStyle({ percentage, inactive, color }) }}">
+    </view>
+
+  </view>
+
+  <view wx:if="{{ showPivot && computed.pivotText(pivotText, percentage) }}" class="van-progress__default-pivot">
+    <view class="slot-container">
+      <slot></slot>
+    </view>
+    <view>{{ computed.pivotText(pivotText, percentage) }}</view>
+  </view>
+
+</view>
+<view class="van-progress-wrap  custom-class" wx:else>
+  <view class="van-progress van-progress-plump">
+    <view class="van-progress__portion" style="{{ computed.portionStyle({ percentage, inactive, color }) }}">
+
+      <view wx:if="{{ showPivot && computed.pivotText(pivotText, percentage) }}"
+        style="{{ computed.pivotStyle({ textColor, pivotColor, inactive, color, right }) }}"
+        class="van-progress__pivot">
+        <view class="slot-container"> 
+          <slot></slot>
+        </view>
+        <view>{{ computed.pivotText(pivotText, percentage) }}</view>
+      </view>
+
+
+    </view>
+  </view>
+
+</view>

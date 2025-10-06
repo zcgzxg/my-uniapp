@@ -1,0 +1,8 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="./index.wxs" module="computed" />
+<import src="./popup.wxml" />
+<van-overlay wx:if="{{ overlay }}" show="{{ show }}" z-index="{{ zIndex }}" custom-style="{{ overlayStyle }}" duration="{{ duration }}" bind:click="onClickOverlay" lock-scroll="{{ draggableSheet||lockScroll }}" root-portal="{{ draggableSheet||rootPortal }}" />
+<root-portal wx:if="{{ rootPortal||draggableSheet }}">
+  <include src="./popup.wxml" />
+</root-portal>
+<include wx:else src="./popup.wxml" />

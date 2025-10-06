@@ -1,0 +1,23 @@
+<view class="van-picker__toolbar toolbar-class">
+  <van-button
+    class="van-picker__cancel"
+    hover-class="van-picker__cancel--hover"
+    hover-stay-time="70"
+    data-type="cancel"
+    bindtap="emit"
+    type="secondary"
+    custom-style="flex: 1;font-weight: 600; height: 48px;"
+  >
+    {{ cancelButtonText }}
+  </van-button>
+  <van-button
+    class="van-picker__confirm"
+    hover-class="van-picker__confirm--hover"
+    hover-stay-time="70"
+    data-type="confirm"
+    bindtap="emit"
+    custom-style="flex: 1; font-weight: 600; height: 48px;"
+  >
+    {{ confirmButtonText }}
+  </van-button>
+</view>

@@ -1,0 +1,187 @@
+<wxs src="./index.wxs" module="util"></wxs>
+<view class="month">
+  <view class="icon-tips"> </view>
+  <view class="arrow-wrap">
+    <view class="arrow" bindtap="prevMonth">
+      <van-icon name="arrow-left"/>
+    </view>
+    <view>
+      {{ util.yearMonthFormat(date) }}
+    </view>
+    <view class="arrow" bindtap="nextMonth">
+      <van-icon name="arrow"/>
+    </view>
+  </view>
+  <view class="icon-tips">
+
+    <van-icon
+         bindtap="showTip"
+          class="iconfont"
+          name="question-o"
+        />
+  </view>
+</view>
+<view class="container">
+  <view class="calendar flex column s-center">
+    <view class="week-row flex m-around wid100">
+      <view
+        class="grid-top"
+        wx:for="{{ week }}"
+        wx:key="item"
+        >{{ item }}</view
+      >
+    </view>
+    <swiper
+      class="swpier-box"
+      style="height: {{ swiperHeight }}px"
+      circular="true"
+      current="{{ swiperIndex }}"
+      bindchange="swiperChange"
+    >
+      <swiper-item>
+        <view
+          class="flex m-around days-table calendar-item"
+        >
+          <!-- prettier-ignore -->
+          <view wx:for="{{ calendar.first }}" wx:for-item="x" wx:key="date" class="grid {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 0 ? 'grid-border0':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 1 ? 'grid-border1':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 3 ? 'grid-border1':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && (workerClockData[x.showDay - 1].state === 5 || workerClockData[x.showDay - 1].state === 6||workerClockData[x.showDay - 1].state === 7) ? 'grid-border2':'' }} {{workerClockData[x.showDay - 1].state === 20 ? 'grid-border2':'' }} {{ x.month === month ? '' : 'notCurrent' }} {{ x.date === today ? 'today' : '' }} {{ x.date == beSelectDate ? 'choice' : '' }} {{workerClockData[x.showDay - 1].state===4?'grid-border-now':''}} {{workerClockData[x.showDay - 1].state === 8? 'grid-border3':''}}"
+            data-month="{{ x.month }}"
+            data-day="{{ x.day }}"
+            data-date="{{ x.date }}"
+            bindtap="bindDayTap">
+            <view class="view">{{ x.showDay }}</view>
+            <block wx:if="{{ workerClockData.length }}">
+               <view class="text-warp">
+              <!-- prettier-ignore -->
+              <!-- <view wx:if="{{ x.date == workerClockData[x.showDay-1].clockDate && workerClockData[x.showDay-1].state !== -1 }}" class="view enabled-day">{{ x.showDay }}</view> -->
+              <!-- prettier-ignore -->
+              <van-icon name="cross" class="da-0 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 0|| workerClockData[x.showDay - 1].state === 8&&workerClockData[x.showDay - 1].checkInCount===0 }}"/>
+              <!-- prettier-ignore -->
+             <van-icon name="success" class="da-1 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 1 }}"/>
+              <!-- prettier-ignore -->
+              <text class="da-3 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 3 }}">已补填</text>
+              <!-- prettier-ignore -->
+              <text class="da-4 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && (workerClockData[x.showDay - 1].state === 4 || workerClockData[x.showDay - 1].state === 2) }}"></text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 5 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 8&&workerClockData[x.showDay - 1].checkInCount>0 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  workerClockData[x.showDay - 1].checkInCycleCount}}</text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 9 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+         </view>
+           </block>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view
+          class="flex m-around days-table calendar-item"
+        >
+          <!-- prettier-ignore -->
+          <view wx:for="{{ calendar.second }}" wx:for-item="x" wx:key="date" class="grid {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 0 ? 'grid-border0':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 1 ? 'grid-border1':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 3 ? 'grid-border1':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && (workerClockData[x.showDay - 1].state === 5 || workerClockData[x.showDay - 1].state === 6 ||workerClockData[x.showDay - 1].state === 7)? 'grid-border2':'' }} {{workerClockData[x.showDay - 1].state === 9 ? 'grid-border2':'' }} {{ x.month === month ? '' : 'notCurrent' }} {{ x.date === today ? 'today' : '' }} {{ x.date == beSelectDate ? 'choice' : ''}} {{workerClockData[x.showDay - 1].state===4?'grid-border-now':''}} {{workerClockData[x.showDay - 1].state === 8? 'grid-border3':''}}"
+            data-month="{{ x.month }}"
+            data-day="{{ x.day }}"
+            data-date="{{ x.date }}"
+            data-test="{{ year + '-' + month + '-' + day }}"
+            bindtap="bindDayTap"
+          >
+            <view class="view">{{ x.showDay }}</view>
+            <block wx:if="{{ workerClockData.length }}">
+               <view class="text-warp">
+              <!-- prettier-ignore -->
+              <!-- <view wx:if="{{ x.date == workerClockData[x.showDay-1].clockDate && workerClockData[x.showDay-1].state !== -1 }}" class="view enabled-day">{{ x.showDay }}</view> -->
+              <!-- prettier-ignore -->
+             <van-icon name="cross" class="da-0 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 0|| workerClockData[x.showDay - 1].state === 8&&workerClockData[x.showDay - 1].checkInCount===0 }}"/>
+              <!-- prettier-ignore -->
+              <van-icon name="success" class="da-1 {{ x.month != month ? 'notda' : '' }} " wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 1 }}"/>
+              <!-- prettier-ignore -->
+              <text class="da-3 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 3 }}">已补填</text>
+              <!-- prettier-ignore -->
+              <text class="da-4 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && (workerClockData[x.showDay - 1].state === 4 || workerClockData[x.showDay - 1].state === 2) }}"></text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 5 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 8&&workerClockData[x.showDay - 1].checkInCount>0 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 9 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+        </view>
+            </block>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view
+          class="flex m-around days-table calendar-item"
+        >
+          <!-- prettier-ignore -->
+          <view wx:for="{{ calendar.third }}" wx:for-item="x" wx:key="date" class="grid {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 0 ? 'grid-border0':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 1 ? 'grid-border1':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 3 ? 'grid-border1':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && (workerClockData[x.showDay - 1].state === 5 || workerClockData[x.showDay - 1].state === 6||workerClockData[x.showDay - 1].state === 7) ? 'grid-border2':'' }} {{workerClockData[x.showDay - 1].state === 9 ? 'grid-border2':'' }} {{ x.month === month ? '' : 'notCurrent' }} {{ x.date === today ? 'today' : '' }} {{ x.date == beSelectDate ? 'choice' : '' }} {{workerClockData[x.showDay - 1].state===4?'grid-border-now':''}} {{workerClockData[x.showDay - 1].state === 8? 'grid-border3':''}}{{workerClockData[x.showDay - 1].state===4?'grid-border-now':''}} {{workerClockData[x.showDay - 1].state === 8? 'grid-border3':''}}"
+            data-month="{{ x.month }}"
+            data-day="{{ x.day }}"
+            data-date="{{ x.date }}"
+            bindtap="bindDayTap"
+          >
+            <!-- prettier-ignore -->
+            <view class="view">
+              {{ x.showDay }}
+            </view>
+            <block wx:if="{{ workerClockData.length }}">
+              <view class="text-warp">
+              <!-- prettier-ignore -->
+              <!-- <view wx:if="{{ x.date == workerClockData[x.showDay-1].clockDate && workerClockData[x.showDay-1].state !== -1 }}" class="view enabled-day">{{ x.showDay }}</view> -->
+              <!-- prettier-ignore -->
+              <van-icon name="cross" class="da-0 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 0|| workerClockData[x.showDay - 1].state === 8&&workerClockData[x.showDay - 1].checkInCount===0 }}"/>
+              <!-- prettier-ignore -->
+              <van-icon name="success" class="da-1 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 1 }}"/>
+              <!-- prettier-ignore -->
+              <text class="da-3 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 3 }}">已补填</text>
+              <!-- prettier-ignore -->
+              <text class="da-4 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && (workerClockData[x.showDay - 1].state === 4 || workerClockData[x.showDay - 1].state === 2) }}"></text>
+              <!-- prettier-ignore -->
+               <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 5 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 8&&workerClockData[x.showDay - 1].checkInCount>0 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 9 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+        </view>
+           </block>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view
+          class="flex m-around days-table calendar-item"
+        >
+          <!-- prettier-ignore -->
+          <view wx:for="{{ calendar.fourth }}" wx:for-item="x" wx:key="date" class="grid {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 0 ? 'grid-border0':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 1 ? 'grid-border1':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 3 ? 'grid-border1':'' }} {{ x.date == workerClockData[x.showDay - 1].clockDate && (workerClockData[x.showDay - 1].state === 5 || workerClockData[x.showDay - 1].state === 6 ||workerClockData[x.showDay - 1].state === 7)? 'grid-border2':'' }} {{workerClockData[x.showDay - 1].state === 9 ? 'grid-border2':'' }} {{ x.month === month ? '' : 'notCurrent' }} {{ x.date === today ? 'today' : '' }} {{ x.date == beSelectDate ? 'choice' : '' }}"
+            data-month="{{ x.month }}"
+            data-day="{{ x.day }}"
+            data-date="{{ x.date }}"
+            bindtap="bindDayTap"
+
+          >
+            <view class="view">{{ x.showDay }}</view>
+            <block wx:if="{{ workerClockData.length }}">
+              <view class="text-warp">
+              <!-- prettier-ignore -->
+              <!-- <view wx:if="{{ x.date == workerClockData[x.showDay-1].clockDate && workerClockData[x.showDay-1].state !== -1 }}" class="view enabled-day">{{ x.showDay }}</view> -->
+              <!-- prettier-ignore -->
+              <van-icon name="cross" class="da-0 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 0|| workerClockData[x.showDay - 1].state === 8&&workerClockData[x.showDay - 1].checkInCount===0 }}"/>
+              <!-- prettier-ignore -->
+               <van-icon name="success" class="da-1 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 1 }}"/>
+              <!-- prettier-ignore -->
+              <text class="da-3 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 3 }}">已补填</text>
+              <!-- prettier-ignore -->
+              <text class="da-4 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && (workerClockData[x.showDay - 1].state === 4 || workerClockData[x.showDay - 1].state === 2) }}"></text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 5 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 8&&workerClockData[x.showDay - 1].checkInCount>0 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+              <!-- prettier-ignore -->
+              <text class="da-5 {{ x.month != month ? 'notda' : '' }}" wx:if="{{ x.date == workerClockData[x.showDay - 1].clockDate && workerClockData[x.showDay - 1].state === 9 }}">{{workerClockData[x.showDay - 1].checkInCount}}/{{  (workerClockData[x.showDay - 1].checkInCycleCount)}}</text>
+          </view>
+           </block>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+</view>
