@@ -5,7 +5,7 @@
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"usingComponents": {
-					"van-nav-bar": "/libs/vant-ui/nav-bar/index"
+					"van-nav-bar": "../wxcomponents/vant-ui/nav-bar/index"
 				}
 			}
 		}
